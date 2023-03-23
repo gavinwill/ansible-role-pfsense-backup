@@ -1,15 +1,14 @@
 ---
-
 # Credentials
-pfsense_hostname: ''
-pfsense_username: ''
-pfsense_password: ''
+pfsense_hostname: ""
+pfsense_username: ""
+pfsense_password: ""
 
 # Web Backup Config
-pfsense_backup_page: 'diag_backup.php'
+pfsense_backup_page: "diag_backup.php"
 # Local Backup Config
-pfsense_backup_directory: ''
-pfsense_backup_filename: '{{ pfsense_backup_directory }}/{{ pfsense_hostname }}-{{ ansible_date_time.iso8601 }}.xml'
+pfsense_backup_directory: ""
+pfsense_backup_filename: "{{ pfsense_backup_directory }}/{{ pfsense_hostname }}-{{ ansible_date_time.iso8601 }}.xml"
 
 # SSL and Logging
 pfsense_https: true
