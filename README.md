@@ -1,7 +1,7 @@
 Role Name
 =========
 
-This role is designed to interact with a pfsense firewall to create and download a local backup of the firewalls configuration. This runs locally to interact with pfsense via the webinterface
+This role is designed to interact with a pfsense firewall to create and download a local backup of the firewalls configuration. This runs locally to interact with pfsense via the webinterface. Currently it is limited to downloading just the basic configuration and does not include RRD Data or SSH keys as of writing.
 
 
 Role Variables
