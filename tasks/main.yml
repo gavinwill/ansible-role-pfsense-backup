@@ -1,0 +1,105 @@
+---
+# Documentation from netgate for remote backup options:
+# https://docs.netgate.com/pfsense/en/latest/backup/remote-backup.html
+
+- name: pfSense Backup | Assert that hostname and credentials supplied
+  ansible.builtin.assert:
+    that:
+      - "{{ item }} | length"
+    fail_msg: "'{{ item }}' must be supplied"
+    quiet: true
+  with_items: 
+    - pfsense_hostname
+    - pfsense_username
+    - pfsense_password
+    - pfsense_backup_directory
+
+- name: pfSense Backup | Construct Backup URL Protocol
+  ansible.builtin.set_fact:
+    pfsense_backup_protocol: "{{'http' if not (pfsense_https) else 'https'}}"
+
+- name: pfSense Backup | Obtain timestamp for saved backup file
+  debug:
+   var: ansible_date_time
+  no_log: "{{ pfsense_backup_no_log }}"
+  
+- name: pfSense Backup | Obtain Cookies & CSRF Token
+  ansible.builtin.uri:
+    url: "{{ pfsense_backup_protocol }}://{{ pfsense_hostname }}/{{ pfsense_backup_page }}"
+    validate_certs: "{{ pfsense_validate_certificates }}"
+    method: GET
+    return_content: yes
+  register: pfsense_cookie_token
+  no_log: "{{ pfsense_backup_no_log }}"
+
+- name: pfSense Backup | Set Fact for CSRF Token 
+  ansible.builtin.set_fact:
+    pfsense_backup_csrf0: "{{ pfsense_cookie_token.content | regex_search('var\\s+csrfMagicToken\\s+=\\s+\\\"([a-f0-9sidp:;,]+)\\\"','\\1') }}"
+  no_log: "{{ pfsense_backup_no_log }}"
+
+- name: pfSense Backup | Set Fact for CSRF Cookie
+  ansible.builtin.set_fact:
+    pfsense_backup_cookie0: "{{ pfsense_cookie_token.set_cookie  }}"
+  no_log: "{{ pfsense_backup_no_log }}"
+
+- name: pfSense Backup | Authenticate with backup page and register Backup CSRF
+  ansible.builtin.uri:
+    url: "{{ pfsense_backup_protocol }}://{{ pfsense_hostname }}/{{ pfsense_backup_page }}"
+    validate_certs: "{{ pfsense_validate_certificates }}"
+    follow_redirects: no
+    method: POST
+    return_content: yes
+    body_format: form-urlencoded
+    status_code: 302
+    body:
+      login: Login
+      usernamefld: "{{ pfsense_username }}"
+      passwordfld: "{{ pfsense_password }}"
+      __csrf_magic: "{{ pfsense_backup_csrf0 }}"
+    headers:
+      Cookie: "{{ pfsense_backup_cookie0 }}"
+  register: pfsense_cookie_token2
+  no_log: "{{ pfsense_backup_no_log }}"
+
+- name: pfSense Backup | Set Fact for Cookie from Backup Page
+  ansible.builtin.set_fact:
+    pfsense_backup_cookie1: "{{ pfsense_cookie_token2.set_cookie }}"
+  no_log: "{{ pfsense_backup_no_log }}"
+
+- name: pfSense Backup | Fetch Target page for new CSRF token
+  ansible.builtin.uri:
+    url: "{{ pfsense_backup_protocol }}://{{ pfsense_hostname }}/{{ pfsense_backup_page }}"
+    validate_certs: "{{ pfsense_validate_certificates }}"
+    follow_redirects: no
+    method: GET
+    return_content: yes
+    headers:
+      Cookie: "{{ pfsense_backup_cookie1 }}"
+  register: pfsense_cookie_token3
+  no_log: "{{ pfsense_backup_no_log }}"
+
+- name: PFSENSE | Set Fact for CSRF Token
+  ansible.builtin.set_fact:
+    pfsense_backup_csrf1: "{{ pfsense_cookie_token3.content | regex_search('var\\s+csrfMagicToken\\s+=\\s+\\\"([a-f0-9sidp:;,]+)\\\"','\\1') }}"
+  no_log: "{{ pfsense_backup_no_log }}"
+
+- name: pfSense Backup | Set Fact for CSRF Cookie
+  ansible.builtin.set_fact:
+    pfsense_backup_cookie2: "{{ pfsense_cookie_token3.set_cookie  }}"
+  no_log: "{{ pfsense_backup_no_log }}"
+
+- name: pfSense Backup | Download Backup Configuration
+  ansible.builtin.uri:
+    url: "{{ pfsense_backup_protocol }}://{{ pfsense_hostname }}/{{ pfsense_backup_page }}"
+    validate_certs: "{{ pfsense_validate_certificates }}"
+    method: POST
+    return_content: yes
+    body_format: form-urlencoded
+    body:
+      download: download
+      __csrf_magic: "{{ pfsense_backup_csrf1 }}"
+    headers:
+      Cookie: "{{ pfsense_backup_cookie2 }}"
+    dest: "{{ pfsense_backup_filename }}"
+  changed_when: false
+  no_log: "{{ pfsense_backup_no_log }}"
