@@ -1,0 +1,22 @@
+
+# DS Store 
+**/.DS_Store
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.env_
+
+# Misc
+.*ignore
+!.gitignore
+.python-version
+.vscode

@@ -8,7 +8,7 @@
       - "{{ item }} | length"
     fail_msg: "'{{ item }}' must be supplied"
     quiet: true
-  with_items: 
+  with_items:
     - pfsense_hostname
     - pfsense_username
     - pfsense_password
@@ -20,9 +20,9 @@
 
 - name: pfSense Backup | Obtain timestamp for saved backup file
   debug:
-   var: ansible_date_time
+    var: ansible_date_time
   no_log: "{{ pfsense_backup_no_log }}"
-  
+
 - name: pfSense Backup | Obtain Cookies & CSRF Token
   ansible.builtin.uri:
     url: "{{ pfsense_backup_protocol }}://{{ pfsense_hostname }}/{{ pfsense_backup_page }}"
@@ -32,7 +32,7 @@
   register: pfsense_cookie_token
   no_log: "{{ pfsense_backup_no_log }}"
 
-- name: pfSense Backup | Set Fact for CSRF Token 
+- name: pfSense Backup | Set Fact for CSRF Token
   ansible.builtin.set_fact:
     pfsense_backup_csrf0: "{{ pfsense_cookie_token.content | regex_search('var\\s+csrfMagicToken\\s+=\\s+\\\"([a-f0-9sidp:;,]+)\\\"','\\1') }}"
   no_log: "{{ pfsense_backup_no_log }}"
