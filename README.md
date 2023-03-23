@@ -28,9 +28,9 @@ Example Playbook
 - hosts: 'localhost'
   connection: local 
   vars: 
-    - pfsense_hostname: 'firewall.example.com'
+    - pfsense_hostname: 'pfsense.example.com'
     - pfsense_username: 'pfbackup'
-    - pfsense_password: 'pfpassword'
+    - pfsense_password: 'redactedpassword'
     - pfsense_backup_directory: '/backups'
   roles:
     - role: ansible-role-pfsense-backup
