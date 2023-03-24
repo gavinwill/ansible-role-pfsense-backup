@@ -14,3 +14,9 @@ pfsense_backup_filename: "{{ pfsense_backup_directory }}/{{ pfsense_hostname }}-
 pfsense_https: true
 pfsense_validate_certificates: true
 pfsense_backup_no_log: true
+
+# Backup Options
+pfsense_backupssh: true
+pfsense_backupdata: true
+pfsense_donotbackuprrd: false
+pfsense_encrypted_password: ""
