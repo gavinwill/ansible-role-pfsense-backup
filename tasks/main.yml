@@ -92,12 +92,12 @@
     body_format: form-urlencoded
     body:
       download: download
-      backupssh: "{{'yes' if (backupssh) | default(omit) }}"
-      backupdata: "{{'yes' if (backupdata) | default(omit) }}"
-      donotbackuprrd: "{{'yes' if (donotbackuprrd) | default(omit) }}"
-      encrypt: "{{'yes' if (encrypted_password | length) | default(omit) }}"
-      encrypt_password: "{{ (encrypted_password) | default(omit) }}"
-      encrypt_password_confirm: "{{ (encrypted_password ) | default(omit) }}"
+      backupssh: "{{'yes' if (pfsense_backupssh) | default(omit) }}"
+      backupdata: "{{'yes' if (pfsense_backupdata) | default(omit) }}"
+      donotbackuprrd: "{{'yes' if (pfsense_donotbackuprrd) | default(omit) }}"
+      encrypt: "{{'yes' if (pfsense_encrypted_password | length) | default(omit) }}"
+      encrypt_password: "{{ (pfsense_encrypted_password) | default(omit) }}"
+      encrypt_password_confirm: "{{ (pfsense_encrypted_password ) | default(omit) }}"
       __csrf_magic: "{{ pfsense_backup_csrf1 }}"
     headers:
       Cookie: "{{ pfsense_backup_cookie2 }}"
