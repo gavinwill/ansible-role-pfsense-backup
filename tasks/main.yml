@@ -18,11 +18,6 @@
   ansible.builtin.set_fact:
     pfsense_backup_protocol: "{{'http' if not (pfsense_https) else 'https'}}"
 
-- name: pfSense Backup | Obtain timestamp for saved backup file
-  debug:
-    var: ansible_date_time
-  no_log: "{{ pfsense_backup_no_log }}"
-
 - name: pfSense Backup | Obtain Cookies & CSRF Token
   ansible.builtin.uri:
     url: "{{ pfsense_backup_protocol }}://{{ pfsense_hostname }}/{{ pfsense_backup_page }}"
