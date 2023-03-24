@@ -18,11 +18,6 @@
   ansible.builtin.set_fact:
     pfsense_backup_protocol: "{{'http' if not (pfsense_https) else 'https'}}"
 
-- name: pfSense Backup | Obtain timestamp for saved backup file
-  debug:
-    var: ansible_date_time
-  no_log: "{{ pfsense_backup_no_log }}"
-
 - name: pfSense Backup | Obtain Cookies & CSRF Token
   ansible.builtin.uri:
     url: "{{ pfsense_backup_protocol }}://{{ pfsense_hostname }}/{{ pfsense_backup_page }}"
@@ -97,6 +92,12 @@
     body_format: form-urlencoded
     body:
       download: download
+      backupssh: "{{'yes' if (pfsense_backupssh) | default(omit) }}"
+      backupdata: "{{'yes' if (pfsense_backupdata) | default(omit) }}"
+      donotbackuprrd: "{{'yes' if (pfsense_donotbackuprrd) | default(omit) }}"
+      encrypt: "{{'yes' if (pfsense_encrypted_password | length) | default(omit) }}"
+      encrypt_password: "{{ (pfsense_encrypted_password) | default(omit) }}"
+      encrypt_password_confirm: "{{ (pfsense_encrypted_password ) | default(omit) }}"
       __csrf_magic: "{{ pfsense_backup_csrf1 }}"
     headers:
       Cookie: "{{ pfsense_backup_cookie2 }}"
