@@ -11,6 +11,8 @@ repos:
             ".secrets.baseline",
             "--exclude-secrets",
             "redactedpassword",
+            "--exclude-secrets",
+            "hunter2",
           ]
 
   - repo: https://github.com/pre-commit/mirrors-prettier
