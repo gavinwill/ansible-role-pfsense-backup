@@ -6,21 +6,21 @@ By default it will download all availible data and options for pfSense backups (
 
 ## Role Variables
 
-| Name                          | Description                                                                   | Default                                                                                       |
-| ----------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| pfsense_hostname              | Hostname or IP of Fireall                                                     |                                                                                               |
-| pfsense_username              | Username to login to pfsense                                                  |                                                                                               |
-| pfsense_password              | password to login to pfsense                                                  |                                                                                               |
-| pfsense_backup_page           | url for backup page in web interface                                          | `diag_backup.php`                                                                             |
-| pfsense_backup_directory      | Local Backup Directory to save pfsense configr                                |                                                                                               |
-| pfsense_backup_filename       | Filename of the saved file                                                    | `'{{ pfsense_backup_directory }}/{{ pfsense_hostname }}-{{ ansible_date_time.iso8601 }}.xml'` |
-| pfsense_https                 | If using HTTPS to connect to firewall                                         | `true`                                                                                        |
-| pfsense_validate_certificates | Check for valid certificates                                                  | `true`                                                                                        |
-| pfsense_backup_no_log         | Hide output from ansible logs                                                 | `true`                                                                                        |
-| pfsense_backupssh             | Option to include the SSH keys for the firewall                               | `true`                                                                                        |
-| pfsense_backupdata            | Option to include extra data such as DHCP leases and captive portal databases | `true`                                                                                        |
-| pfsense_donotbackuprrd        | Negate backup of the RRD files                                                | `false`                                                                                       |
-| pfsense_encrypted_password    | Password to encrypt the backup file. Password will be needed for any restore  | `true`                                                                                        |
+| Name                          | Description                                                                              | Default                                                                                       |
+| ----------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| pfsense_hostname              | Hostname or IP of pfSense Firewall                                                       |                                                                                               |
+| pfsense_username              | Username to login to pfSense Firewall                                                    |                                                                                               |
+| pfsense_password              | password to login to pfSense Firewall                                                    |                                                                                               |
+| pfsense_backup_page           | url for backup page in web interface                                                     | `diag_backup.php`                                                                             |
+| pfsense_backup_directory      | Local Backup Directory to save pfSense Firewall backups                                  |                                                                                               |
+| pfsense_backup_filename       | Filename of the saved file                                                               | `'{{ pfsense_backup_directory }}/{{ pfsense_hostname }}-{{ ansible_date_time.iso8601 }}.xml'` |
+| pfsense_https                 | If using HTTPS to connect to firewall                                                    | `true`                                                                                        |
+| pfsense_validate_certificates | Check for valid SSL certificates                                                         | `true`                                                                                        |
+| pfsense_backup_no_log         | Hide output from ansible logs                                                            | `true`                                                                                        |
+| pfsense_backupssh             | Option for backup to include the SSH keys for the pfSense Firewall                       | `true`                                                                                        |
+| pfsense_backupdata            | Option for backup to include extra data such as DHCP leases and captive portal databases | `true`                                                                                        |
+| pfsense_donotbackuprrd        | Negate backup of the RRD files                                                           | `false`                                                                                       |
+| pfsense_encrypted_password    | Password to encrypt the backup file. Password will be needed for any restore             | `true`                                                                                        |
 
 ## Example Playbook
 
