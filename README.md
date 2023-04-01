@@ -1,5 +1,7 @@
 # Ansible-Role-Pfsense-Backup
 
+[![ansible-lint](https://github.com/gavinwill/ansible-role-pfsense-backup/actions/workflows/ansible_lint.yml/badge.svg)](https://github.com/gavinwill/ansible-role-pfsense-backup/actions/workflows/ansible_lint.yml)
+
 This role is designed to interact with a pfsense firewall to create and download a local backup of the firewalls configuration. This runs locally to interact with pfsense via the webinterface.
 
 By default it will download all availible data and options for pfSense backups (ssh keys, rrd data, extra services data...). If a `pfsense_encrypted_password` is supplied it will encrypt the backup file with this password. It will need to be supplied if using the backup file to restore pfSense.
